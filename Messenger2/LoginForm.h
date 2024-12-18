@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "User.h"
+#include "DatabaseHelper.h"
 namespace Messenger2 {
 
 	using namespace System;
@@ -10,24 +11,18 @@ namespace Messenger2 {
 	using namespace System::Drawing;
 	using namespace System::Data::SqlClient;
 
-	/// <summary>
-	/// Summary for LoginForm
-	/// </summary>
+
 	public ref class LoginForm : public System::Windows::Forms::Form
 	{
 	public:
+		///CONSTRUCTOR
 		LoginForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
 		}
 
 	protected:
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
+		///DESTRUCTOR
 		~LoginForm()
 		{
 			if (components)
@@ -40,7 +35,6 @@ namespace Messenger2 {
 	protected:
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::TextBox^ tbUsername;
-
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::TextBox^ tbPassword;
 	private: System::Windows::Forms::Button^ btnOK;
@@ -48,16 +42,12 @@ namespace Messenger2 {
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Button^ btnCreateAccount;
 
-
-
-
-
-
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -196,11 +186,13 @@ namespace Messenger2 {
 
 public: User^ user = nullptr;
 
+//ACEST BUTON INCHIDE LOGIN-UL
 private: System::Void btnCancel_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	this->Close();
 }
 
+//ACEST BUTON VERIFICA LOGINUL
 private: System::Void btnOK_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	String^ username = this->tbUsername->Text;
@@ -213,39 +205,22 @@ private: System::Void btnOK_Click(System::Object^ sender, System::EventArgs^ e)
 		return;
 	}
 
-	try
-	{
-		String^ connectionString ="Data Source=localhost\\sqlexpress;Initial Catalog=mymessenger;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
-		SqlConnection sqlConnection(connectionString);
-		sqlConnection.Open();
-
-		String^ sqlQuery = "SELECT * FROM Users WHERE username=@username AND password=@password;";
-		SqlCommand command(sqlQuery, % sqlConnection);
-		command.Parameters->AddWithValue("@username", username);
-		command.Parameters->AddWithValue("@password", password);
-
-		SqlDataReader^ reader = command.ExecuteReader();
-		if (reader->Read())
-		{
-			//s-a reusit citirea
-
-			user = gcnew User;
-			user->Id = reader->GetInt32(0);
-			user->username = reader->GetString(1);
-			user->password = reader->GetString(2);
-			this->Close();
+	user = nullptr;
+	try {
+		user = DatabaseHelper::AuthenticateUser(username, password);
+		if (user != nullptr) {
+			this->Close(); //inchidem aceasta fereastra, ne ducem la dashboard
 		}
-		else
-		{
-			MessageBox::Show("User or password is incorrect", "User or pass error", MessageBoxButtons::OK);
+		else {
+			MessageBox::Show("Invalid username or password", "Login Failed", MessageBoxButtons::OK);
 		}
 	}
-	catch (Exception^ e)
-	{
-		MessageBox::Show("Error: " + e->Message, "Database Error", MessageBoxButtons::OK);
+	catch (Exception^ e) {
+		MessageBox::Show("Database error: " + e->Message, "Error", MessageBoxButtons::OK);
 	}
 }
 
+//ACEST BUTON NE TRECE DE LA FORMUL DE LOGIN LA FORMUL DE REGISTER
 public: bool switchToRegister = false;
 private: System::Void btnCreateAccount_Click(System::Object^ sender, System::EventArgs^ e)
 {

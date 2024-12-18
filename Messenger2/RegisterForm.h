@@ -1,5 +1,7 @@
 #pragma once
 #include "User.h"
+#include "DatabaseHelper.h"
+#include <iostream>
 namespace Messenger2 {
 
 	using namespace System;
@@ -243,40 +245,53 @@ namespace Messenger2 {
 			return;
 		}
 
+		user = nullptr;
+
 		if (String::Compare(password, repeatpassword) != 0)
 		{
 			MessageBox::Show("The two password fields are different", "Error - Passwords must be the same", MessageBoxButtons::OK);
 			return;
 		}
 
-		try {
 
-			String^ connectionString = "Data Source=localhost\\sqlexpress;Initial Catalog=mymessenger;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
-			SqlConnection sqlConnection(connectionString);
-			sqlConnection.Open();
-			
-			String^ sqlQuery = "INSERT INTO Users " +
-				"(username, password) VALUES" + "(@username,@password);";
-			SqlCommand command(sqlQuery, % sqlConnection);
+		try
+		{
+			DatabaseHelper::RegisterUser(username, password);
 
-			command.Parameters->AddWithValue("@username", username);
-			command.Parameters->AddWithValue("@password", password);
-
-			command.ExecuteNonQuery();
-
+			// Registration succeeded
 			user = gcnew User;
 			user->username = username;
 			user->password = password;
 
 			this->Close();
 		}
-		catch (Exception^ e)
+		catch (SqlException^ sqlEx)
 		{
-			MessageBox::Show("Error: " + e->Message, "Database Error", MessageBoxButtons::OK);
+			if (sqlEx->Number == 2627) // Unique constraint error
+			{
+				MessageBox::Show("Username already exists. Please choose another one.", "Registration Error", MessageBoxButtons::OK);
+			}
+			else
+			{
+				MessageBox::Show("Database error: " + sqlEx->Message, "Database Error", MessageBoxButtons::OK);
+			}
 		}
+		catch (Exception^ ex)
+		{
+			// Handle general exceptions
+			MessageBox::Show("An unexpected error occurred: " + ex->Message, "Error", MessageBoxButtons::OK);
+		}
+
+		
+		user = gcnew User;
+		user->username = username;
+		user->password = password;
+		user->isActive = true;
+
+		user->Id = DatabaseHelper::GetIdByUsername(user->username);//for true (in SQL) modification of isActive (have to call SetUserActive).
+
+		this->Close();
 	}
-
-
 };
 }
 
