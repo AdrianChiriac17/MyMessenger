@@ -3,6 +3,7 @@
 #include "DatabaseHelper.h"
 #include "ConversationHelper.h"
 #include "User.h"
+#include "RecentConvos.h"
 
 namespace Messenger2 {
 
@@ -23,6 +24,7 @@ namespace Messenger2 {
 	/// TIMER FOR THE LISTS TO UPDATE 2 TIMES PER SECOND
 	private: System::Windows::Forms::Timer^ updateUserListsTimer;
 
+
 	///USER FOR THIS SPECIFIC SESSION
 	private: User^ currentUser;
 
@@ -31,10 +33,6 @@ namespace Messenger2 {
 		Dashboard(User^ user)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
-
 			this->currentUser = user;
 			lbWelcome->Text = "Welcome back, " + user->username + "!";
 		}
@@ -59,7 +57,7 @@ namespace Messenger2 {
 	private: System::Windows::Forms::Label^ lbAllUsers;
 	private: System::Windows::Forms::ListBox^ listboxAllUsers;
 	private: System::Windows::Forms::Label^ lbTutorialDM;
-	private: System::Windows::Forms::Label^ lbRecentConversations;
+
 	private: System::Windows::Forms::Button^ btnRefreshAllUserList;
 
 	protected:
@@ -88,7 +86,6 @@ namespace Messenger2 {
 			this->lbAllUsers = (gcnew System::Windows::Forms::Label());
 			this->listboxAllUsers = (gcnew System::Windows::Forms::ListBox());
 			this->lbTutorialDM = (gcnew System::Windows::Forms::Label());
-			this->lbRecentConversations = (gcnew System::Windows::Forms::Label());
 			this->btnRefreshAllUserList = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
@@ -135,14 +132,14 @@ namespace Messenger2 {
 			this->listboxActiveUsers->ItemHeight = 25;
 			this->listboxActiveUsers->Location = System::Drawing::Point(898, 111);
 			this->listboxActiveUsers->Name = L"listboxActiveUsers";
-			this->listboxActiveUsers->Size = System::Drawing::Size(254, 179);
+			this->listboxActiveUsers->Size = System::Drawing::Size(254, 404);
 			this->listboxActiveUsers->TabIndex = 3;
 			// 
 			// lbAllUsers
 			// 
 			this->lbAllUsers->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lbAllUsers->Location = System::Drawing::Point(893, 313);
+			this->lbAllUsers->Location = System::Drawing::Point(14, 126);
 			this->lbAllUsers->Name = L"lbAllUsers";
 			this->lbAllUsers->Size = System::Drawing::Size(144, 27);
 			this->lbAllUsers->TabIndex = 4;
@@ -154,9 +151,9 @@ namespace Messenger2 {
 				static_cast<System::Byte>(0)));
 			this->listboxAllUsers->FormattingEnabled = true;
 			this->listboxAllUsers->ItemHeight = 25;
-			this->listboxAllUsers->Location = System::Drawing::Point(898, 352);
+			this->listboxAllUsers->Location = System::Drawing::Point(19, 156);
 			this->listboxAllUsers->Name = L"listboxAllUsers";
-			this->listboxAllUsers->Size = System::Drawing::Size(254, 179);
+			this->listboxAllUsers->Size = System::Drawing::Size(781, 354);
 			this->listboxAllUsers->TabIndex = 5;
 			this->listboxAllUsers->SelectedIndexChanged += gcnew System::EventHandler(this, &Dashboard::listboxAllUsers_SelectedIndexChanged);
 			// 
@@ -172,22 +169,11 @@ namespace Messenger2 {
 			this->lbTutorialDM->Text = L"To start a new conversation, double-click one of the users from the All Users lis"
 				L"t.";
 			// 
-			// lbRecentConversations
-			// 
-			this->lbRecentConversations->AutoSize = true;
-			this->lbRecentConversations->Font = (gcnew System::Drawing::Font(L"Microsoft YaHei", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->lbRecentConversations->Location = System::Drawing::Point(13, 111);
-			this->lbRecentConversations->Name = L"lbRecentConversations";
-			this->lbRecentConversations->Size = System::Drawing::Size(311, 36);
-			this->lbRecentConversations->TabIndex = 7;
-			this->lbRecentConversations->Text = L"Recent Conversations";
-			// 
 			// btnRefreshAllUserList
 			// 
 			this->btnRefreshAllUserList->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->btnRefreshAllUserList->Location = System::Drawing::Point(935, 548);
+			this->btnRefreshAllUserList->Location = System::Drawing::Point(323, 531);
 			this->btnRefreshAllUserList->Name = L"btnRefreshAllUserList";
 			this->btnRefreshAllUserList->Size = System::Drawing::Size(173, 37);
 			this->btnRefreshAllUserList->TabIndex = 8;
@@ -202,7 +188,6 @@ namespace Messenger2 {
 			this->BackColor = System::Drawing::Color::SeaShell;
 			this->ClientSize = System::Drawing::Size(1172, 601);
 			this->Controls->Add(this->btnRefreshAllUserList);
-			this->Controls->Add(this->lbRecentConversations);
 			this->Controls->Add(this->lbTutorialDM);
 			this->Controls->Add(this->listboxAllUsers);
 			this->Controls->Add(this->lbAllUsers);
@@ -287,6 +272,10 @@ namespace Messenger2 {
 
 
 
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	RecentConversations::DisplayRecentConversations(currentUser->username);
+}
 };//end of class
 
 }//end of namespace

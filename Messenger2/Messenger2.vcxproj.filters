@@ -30,6 +30,9 @@
     <ClCompile Include="ConversationForm.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="RecentConvos.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LoginForm.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConversationForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RecentConvos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

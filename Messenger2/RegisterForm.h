@@ -13,24 +13,15 @@ namespace Messenger2 {
 	using namespace System::Data::SqlClient;
 
 
-	/// <summary>
-	/// Summary for RegisterForm
-	/// </summary>
 	public ref class RegisterForm : public System::Windows::Forms::Form
 	{
 	public:
 		RegisterForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
 		}
 
 	protected:
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
 		~RegisterForm()
 		{
 			if (components)
@@ -38,6 +29,7 @@ namespace Messenger2 {
 				delete components;
 			}
 		}
+
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Button^ btnCancel;
@@ -56,9 +48,6 @@ namespace Messenger2 {
 	protected:
 
 	private:
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
 		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
@@ -232,6 +221,8 @@ namespace Messenger2 {
 		this->Close();
 	}
 	
+
+
 	public: User^ user = nullptr;
 	private: System::Void btnOK_Click(System::Object^ sender, System::EventArgs^ e)
 	{
@@ -257,11 +248,13 @@ namespace Messenger2 {
 		try
 		{
 			DatabaseHelper::RegisterUser(username, password);
-
 			// Registration succeeded
 			user = gcnew User;
 			user->username = username;
 			user->password = password;
+			user->isActive = true;
+			user->Id = DatabaseHelper::GetIdByUsername(user->username);
+			//for true (in SQL) modification of isActive (have to call SetUserActive).
 
 			this->Close();
 		}
@@ -275,22 +268,13 @@ namespace Messenger2 {
 			{
 				MessageBox::Show("Database error: " + sqlEx->Message, "Database Error", MessageBoxButtons::OK);
 			}
+			return;
 		}
 		catch (Exception^ ex)
 		{
-			// Handle general exceptions
 			MessageBox::Show("An unexpected error occurred: " + ex->Message, "Error", MessageBoxButtons::OK);
+			return;
 		}
-
-		
-		user = gcnew User;
-		user->username = username;
-		user->password = password;
-		user->isActive = true;
-
-		user->Id = DatabaseHelper::GetIdByUsername(user->username);//for true (in SQL) modification of isActive (have to call SetUserActive).
-
-		this->Close();
 	}
 };
 }

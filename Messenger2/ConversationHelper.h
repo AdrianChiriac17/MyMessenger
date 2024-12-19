@@ -72,7 +72,7 @@ public:
         if(currentUser!= selectedUser)
         {
             firstMessage = "On " + dateTimeString + ", " + currentUser +
-                " began a conversation with " + selectedUser + ".\n";
+                " began a conversation with " + selectedUser + ".\n\n";
         }
         else
         {
