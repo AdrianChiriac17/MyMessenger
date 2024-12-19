@@ -51,7 +51,7 @@ void main(array<String^>^ args)
 	if (user != nullptr)
 	{
 		
-		//MessageBox::Show("Succesful authentification of " + user->username, "Program.cpp", MessageBoxButtons::OK);
+		//MessageBox::Show("Succesful authentification of " + user->username, "Program.cpp", MessageBoxButtons::OK)
 		
 		DatabaseHelper::SetUserActive(user->Id);
 
