@@ -10,7 +10,6 @@ void main(array<String^>^ args)
 {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	Messenger2::LoginForm loginForm;
 
 	/*
 	*	Acest main are rolul numai de a Porni cele 2 ferestre, Login si Register
@@ -54,7 +53,6 @@ void main(array<String^>^ args)
 		//MessageBox::Show("Succesful authentification of " + user->username, "Program.cpp", MessageBoxButtons::OK)
 		
 		DatabaseHelper::SetUserActive(user->Id);
-
 
 		Messenger2::Dashboard dashboard(user);
 		Application::Run(% dashboard);

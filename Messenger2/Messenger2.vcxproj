@@ -126,7 +126,6 @@
     <ClCompile Include="Dashboard.cpp" />
     <ClCompile Include="LoginForm.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="RecentConvos.cpp" />
     <ClCompile Include="RegisterForm.cpp" />
   </ItemGroup>
   <ItemGroup>

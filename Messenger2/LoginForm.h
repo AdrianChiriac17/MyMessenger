@@ -91,7 +91,7 @@ namespace Messenger2 {
 			// 
 			// tbUsername
 			// 
-			this->tbUsername->Location = System::Drawing::Point(165, 156);
+			this->tbUsername->Location = System::Drawing::Point(165, 159);
 			this->tbUsername->Name = L"tbUsername";
 			this->tbUsername->Size = System::Drawing::Size(325, 31);
 			this->tbUsername->TabIndex = 2;
@@ -137,7 +137,7 @@ namespace Messenger2 {
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(535, 66);
+			this->pictureBox1->Location = System::Drawing::Point(516, 61);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(358, 332);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
